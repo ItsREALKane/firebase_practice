@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:firebase_practice/pages/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +16,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Mencobaaaaa',
+      initialRoute: '/',
+      debugShowCheckedModeBanner: false,
+      getPages: [
+        GetPage(name: '/', page: ( )=> LoginScreen())
+      ],
     );
   }
 }
