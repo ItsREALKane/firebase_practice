@@ -19,32 +19,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // 🔐 Function to handle Google Sign-In
   Future<User?> signInWithGoogle() async {
-  try {
-    // Sign in with Google
-    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-    if (googleUser == null) {
-      // User canceled the login
+    try {
+      // Sign in with Google
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        // User canceled the login
+        return null;
+      }
+
+      // Authenticate
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Create credentials
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in to Firebase
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+
+      return userCredential.user;
+    } catch (e) {
+      print("Error during Google Sign-In: $e");
       return null;
     }
-
-    // Authenticate
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-    // Create credentials
-    final OAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    // Sign in to Firebase
-    final UserCredential userCredential = await _auth.signInWithCredential(credential);
-
-    return userCredential.user;
-  } catch (e) {
-    print("Error during Google Sign-In: $e");
-    return null;
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (user != null) {
                         print('Logged in as: ${user.displayName}');
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Welcome, ${user.displayName}!')),
+                          SnackBar(
+                              content: Text('Welcome, ${user.displayName}!')),
                         );
                         // Navigate to HomePage after successful Google login
                         Navigator.pushReplacement(
@@ -96,7 +99,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       } else {
                         print('Google Sign-In canceled.');
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Google Sign-In failed or was canceled')),
+                          SnackBar(
+                              content: Text(
+                                  'Google Sign-In failed or was canceled')),
                         );
                       }
                     },

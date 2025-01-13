@@ -2,11 +2,11 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_practice/api/firebase_api.dart';
-import 'package:firebase_practice/pages/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_practice/pages/login_screen_sign-in.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
