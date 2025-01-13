@@ -1,15 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_practice/api/firebase_api.dart';
+import 'package:firebase_practice/pages/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_practice/pages/login_screen_sign-in.dart';
 
 void main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Ensures all bindings are initialized before Firebase
-  await Firebase.initializeApp(); // Initialize Firebase
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await FirebaseApi().iniNotification();
   runApp(const MyApp());
 }
 
