@@ -1,96 +1,114 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../controllers/person_controller.dart';
+import '../models/person_model.dart';
 
 class HomePage extends StatelessWidget {
+  final PersonController controller = Get.put(PersonController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-        backgroundColor: Color.fromARGB(255, 0, 140, 175),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Hero Section
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blueAccent,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                padding: EdgeInsets.all(24),
-                child: Column(
+      appBar: AppBar(title: const Text('Flutter Firebase')),
+      body: Obx(() {
+        return ListView.builder(
+          itemCount: controller.persons.length,
+          itemBuilder: (context, index) {
+            final person = controller.persons[index];
+            return Card(
+              child: ListTile(
+                title: Text('Name: ${person.name}'),
+                subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Welcome Back!',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Text('Age: ${person.age}'),
+                    Text('Location: ${person.location}'),
+                  ],
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () => _showForm(context, person),
                     ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Discover new opportunities today.',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 18,
-                      ),
+                    IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () => controller.deletePerson(person.id),
                     ),
                   ],
                 ),
               ),
-            ),
+            );
+          },
+        );
+      }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showForm(context, null),
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
 
-            // Grid of Cards
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                'Categories',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+  void _showForm(BuildContext context, PersonModel? person) {
+    final nameController = TextEditingController(text: person?.name ?? '');
+    final ageController =
+        TextEditingController(text: person != null ? '${person.age}' : '');
+    final locationController =
+        TextEditingController(text: person?.location ?? '');
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(person == null ? 'Add Person' : 'Edit Person'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(labelText: 'Name'),
               ),
+              TextField(
+                controller: ageController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'Age'),
+              ),
+              TextField(
+                controller: locationController,
+                decoration: const InputDecoration(labelText: 'Location'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
             ),
-            SizedBox(height: 12),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              itemCount: 6,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              itemBuilder: (context, index) {
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  color: Colors.primaries[index % Colors.primaries.length],
-                  child: Center(
-                    child: Text(
-                      'Card ${index + 1}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                );
+            ElevatedButton(
+              onPressed: () {
+                final name = nameController.text.trim();
+                final age = int.tryParse(ageController.text.trim()) ?? 0;
+                final location = locationController.text.trim();
+
+                if (name.isNotEmpty && age > 0 && location.isNotEmpty) {
+                  if (person == null) {
+                    controller.addPerson(
+                      PersonModel(id: '', name: name, age: age, location: location),
+                    );
+                  } else {
+                    controller.updatePerson(
+                      PersonModel(id: person.id, name: name, age: age, location: location),
+                    );
+                  }
+                  Navigator.pop(context);
+                }
               },
+              child: const Text('Save'),
             ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }
