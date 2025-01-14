@@ -9,43 +9,70 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Flutter Firebase')),
-      body: Obx(() {
-        return ListView.builder(
-          itemCount: controller.persons.length,
-          itemBuilder: (context, index) {
-            final person = controller.persons[index];
-            return Card(
-              child: ListTile(
-                title: Text('Name: ${person.name}'),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Age: ${person.age}'),
-                    Text('Location: ${person.location}'),
-                  ],
+      appBar: AppBar(
+        foregroundColor: Colors.white,
+        title: const Text(
+          'Pemain Sepak Bola',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Colors.indigo,
+      ),
+      body: Container(
+        color: Colors.grey[200],
+        child: Obx(() {
+          return ListView.builder(
+            padding: const EdgeInsets.all(8.0),
+            itemCount: controller.persons.length,
+            itemBuilder: (context, index) {
+              final person = controller.persons[index];
+              return Card(
+                elevation: 4,
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () => _showForm(context, person),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(16.0),
+                  title: Text(
+                    person.name,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () => controller.deletePerson(person.id),
-                    ),
-                  ],
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8.0),
+                      Text('Age: ${person.age}',
+                          style: TextStyle(color: Colors.grey[700])),
+                      Text('Location: ${person.location}',
+                          style: TextStyle(color: Colors.grey[700])),
+                    ],
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit, color: Colors.indigo),
+                        onPressed: () => _showForm(context, person),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.redAccent),
+                        onPressed: () => controller.deletePerson(person.id),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
-        );
-      }),
+              );
+            },
+          );
+        }),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showForm(context, null),
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.indigo,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
@@ -61,29 +88,57 @@ class HomePage extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(person == null ? 'Add Person' : 'Edit Person'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-              ),
-              TextField(
-                controller: ageController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Age'),
-              ),
-              TextField(
-                controller: locationController,
-                decoration: const InputDecoration(labelText: 'Location'),
-              ),
-            ],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          title: Text(
+            person == null ? 'Add Person' : 'Edit Person',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                TextField(
+                  controller: ageController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: 'Age',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                TextField(
+                  controller: locationController,
+                  decoration: InputDecoration(
+                    labelText: 'Location',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.redAccent),
+              ),
             ),
             ElevatedButton(
               onPressed: () {
@@ -94,11 +149,21 @@ class HomePage extends StatelessWidget {
                 if (name.isNotEmpty && age > 0 && location.isNotEmpty) {
                   if (person == null) {
                     controller.addPerson(
-                      PersonModel(id: '', name: name, age: age, location: location),
+                      PersonModel(
+                        id: '',
+                        name: name,
+                        age: age,
+                        location: location,
+                      ),
                     );
                   } else {
                     controller.updatePerson(
-                      PersonModel(id: person.id, name: name, age: age, location: location),
+                      PersonModel(
+                        id: person.id,
+                        name: name,
+                        age: age,
+                        location: location,
+                      ),
                     );
                   }
                   Navigator.pop(context);

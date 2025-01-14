@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:firebase_practice/pages/home_page.dart';
 import 'package:firebase_practice/services/authService.dart';
 import 'package:firebase_practice/widgets/btn_login.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -12,12 +12,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('Login'),
-        backgroundColor: Color.fromARGB(255, 0, 140, 175),
-      ),
-      backgroundColor: Color.fromARGB(255, 0, 140, 175),
+      backgroundColor: Colors.grey[200],
       body: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 25, vertical: 50),
@@ -26,6 +21,14 @@ class LoginScreen extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                    offset: Offset(0, 5),
+                  )
+                ],
               ),
               padding: EdgeInsets.all(24.0),
               child: Column(
@@ -34,11 +37,20 @@ class LoginScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    "Log In",
+                    "Welcome Back!",
                     style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.indigo,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 10.0),
+                  Text(
+                    "Log in to continue",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[600],
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -53,7 +65,9 @@ class LoginScreen extends StatelessWidget {
                           SnackBar(
                               content: Text('Welcome, ${user.displayName}!')),
                         );
-                        Get.to(HomePage());
+                        Get.to(HomePage(),
+                            transition: Transition.circularReveal,
+                            duration: Duration(seconds: 1));
                       } else {
                         print('Google Sign-In canceled.');
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -63,10 +77,15 @@ class LoginScreen extends StatelessWidget {
                         );
                       }
                     },
-                    bgColor: Colors.white,
-                    borderColor: Colors.black,
-                    textColor: Colors.black,
-                    fontSize: 16,
+                    bgColor: Colors.indigo,
+                    borderColor: Colors.indigoAccent,
+                    textColor: Colors.white,
+                    fontSize: 18,
+                    icon: Image.asset(
+                      'assets/Google.png',
+                      height: 24,
+                      width: 24,
+                    ),
                   ),
                 ],
               ),
