@@ -1,52 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_practice/pages/home_page.dart';
+import 'package:firebase_practice/services/authService.dart';
 import 'package:firebase_practice/widgets/btn_login.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'home_page.dart'; // Import HomePage
+import 'package:get/get.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-
-  // 🔐 Function to handle Google Sign-In
-  Future<User?> signInWithGoogle() async {
-    try {
-      // Sign in with Google
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) {
-        // User canceled the login
-        return null;
-      }
-
-      // Authenticate
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      // Create credentials
-      final OAuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      // Sign in to Firebase
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
-
-      return userCredential.user;
-    } catch (e) {
-      print("Error during Google Sign-In: $e");
-      return null;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Color.fromARGB(255, 0, 140, 175),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
+          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 50),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Container(
@@ -84,18 +45,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   BtnLogin(
                     text: "Google Login",
                     onPressed: () async {
-                      final user = await signInWithGoogle();
+                      final user = await AuthService.signInWithGoogle();
                       if (user != null) {
                         print('Logged in as: ${user.displayName}');
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                               content: Text('Welcome, ${user.displayName}!')),
                         );
-                        // Navigate to HomePage after successful Google login
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                        );
+                        Get.to(HomePage());
                       } else {
                         print('Google Sign-In canceled.');
                         ScaffoldMessenger.of(context).showSnackBar(

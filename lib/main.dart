@@ -2,11 +2,9 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_practice/api/firebase_api.dart';
+import 'package:firebase_practice/routes/myAppRoute.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_practice/pages/login_screen_sign-in.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,11 +20,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Mencobaaaaa',
-      initialRoute: '/',
+      initialRoute: MyAppsRoute.login,
       debugShowCheckedModeBanner: false,
-      getPages: [
-        GetPage(name: '/', page: () => LoginScreen()),
-      ],
+      getPages: AppPages.pages,
     );
   }
 }
+
