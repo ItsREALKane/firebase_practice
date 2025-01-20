@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/person_controller.dart';
-import '../models/person_model.dart';
+import '../../controllers/person_controller.dart';
+import '../../models/person_model.dart';
 
 class HomePage extends StatelessWidget {
   final PersonController controller = Get.put(PersonController());

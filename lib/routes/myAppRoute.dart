@@ -1,4 +1,4 @@
-import 'package:firebase_practice/pages/home_page.dart';
+import 'package:firebase_practice/pages/menus/home_page.dart';
 import 'package:firebase_practice/pages/login_screen_sign-in.dart';
 import 'package:get/get.dart';
 

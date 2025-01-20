@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_practice/controllers/login_controller.dart';
+import 'package:firebase_practice/pages/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_practice/pages/home_page.dart';
+import 'package:firebase_practice/pages/menus/home_page.dart';
 import 'package:firebase_practice/services/authService.dart';
 import 'package:firebase_practice/widgets/btn_login.dart';
 
@@ -11,6 +13,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      final authController = Get.put(AuthController());
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: Center(
@@ -57,26 +60,7 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(height: 25.0),
                   BtnLogin(
                     text: "Google Login",
-                    onPressed: () async {
-                      final user = await AuthService.signInWithGoogle();
-                      if (user != null) {
-                        print('Logged in as: ${user.displayName}');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text('Welcome, ${user.displayName}!')),
-                        );
-                        Get.to(HomePage(),
-                            transition: Transition.circularReveal,
-                            duration: Duration(seconds: 1));
-                      } else {
-                        print('Google Sign-In canceled.');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  'Google Sign-In failed or was canceled')),
-                        );
-                      }
-                    },
+                    onPressed: authController.signInWithGoogle,
                     bgColor: Colors.indigo,
                     borderColor: Colors.indigoAccent,
                     textColor: Colors.white,

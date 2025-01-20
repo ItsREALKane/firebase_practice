@@ -1,5 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_practice/pages/home_page.dart';
+import 'package:firebase_practice/pages/menus/home_page.dart';
 import 'package:get/get.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
