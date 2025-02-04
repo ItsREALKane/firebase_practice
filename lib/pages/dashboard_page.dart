@@ -4,7 +4,6 @@ import 'package:firebase_practice/controllers/dashboard_controller.dart';
 import 'package:firebase_practice/pages/menus/home_page.dart';
 import 'package:firebase_practice/pages/menus/profile_pages.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 

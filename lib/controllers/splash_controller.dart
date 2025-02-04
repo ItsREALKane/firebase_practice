@@ -12,14 +12,15 @@ class SplashController extends GetxController {
   }
 
   void checkLoginStatus() async {
-    await Future.delayed(const Duration(seconds: 7));
+    await Future.delayed(const Duration(seconds: 1));
     
     final isLoggedIn = storage.read('isLoggedIn') ?? false;
+    print('User logged in: $isLoggedIn');
     
     if (isLoggedIn) {
-      Get.offAllNamed(MyAppsRoute.home,);
+      Get.offAllNamed('/home');
     } else {
-      Get.offAllNamed(MyAppsRoute.login);
+      Get.offAllNamed('/login');
     }
   }
 }

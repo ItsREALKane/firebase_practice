@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_practice/pages/dashboard_page.dart';
 import 'package:firebase_practice/pages/menus/home_page.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +27,7 @@ class FirebaseApi {
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print('Notification Opened: ${message.notification?.body ?? ''}');
       print('Payload: ${message.data}');
-      Get.to(() => HomePage());     
+      Get.to(() => DashboardPage());     
     });
   }
 }

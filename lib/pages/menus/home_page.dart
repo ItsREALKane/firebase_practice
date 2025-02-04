@@ -10,6 +10,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         foregroundColor: Colors.white,
         title: const Text(
           'Pemain Sepak Bola',
@@ -32,6 +33,7 @@ class HomePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.0),
                 ),
                 child: ListTile(
+                  
                   contentPadding: const EdgeInsets.all(16.0),
                   title: Text(
                     person.name,

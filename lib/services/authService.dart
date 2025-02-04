@@ -29,4 +29,14 @@ class AuthService {
       return null;
     }
   }
+
+  static Future<void> signOut() async {
+  try {
+    await _googleSignIn.signOut();
+    await _auth.signOut();
+  } catch (e) {
+    print("Error during Sign-Out: $e");
+  }
+}
+
 }
