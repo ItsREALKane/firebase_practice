@@ -2,6 +2,7 @@
 
 import 'package:firebase_practice/controllers/login_controller.dart';
 import 'package:firebase_practice/pages/dashboard_page.dart';
+import 'package:firebase_practice/routes/myAppRoute.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_practice/pages/menus/home_page.dart';
@@ -13,7 +14,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final authController = Get.put(AuthController());
+    final authController = Get.put(AuthController());
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: Center(
@@ -71,6 +72,14 @@ class LoginScreen extends StatelessWidget {
                       width: 24,
                     ),
                   ),
+                  BtnLogin(
+                      text: "Continue without account",
+                      onPressed: () => Get.toNamed(MyAppsRoute.navbar),
+                      bgColor: Colors.indigo,
+                      borderColor: Colors.indigoAccent,
+                      textColor: Colors.white,
+                      fontSize: 18,
+                      icon: null)
                 ],
               ),
             ),

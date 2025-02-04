@@ -9,7 +9,7 @@ class BtnLogin extends StatelessWidget {
   final Color borderColor;
   final Color textColor;
   final double fontSize;
-  final Widget icon;
+  final Widget? icon;
 
   const BtnLogin({
     Key? key,

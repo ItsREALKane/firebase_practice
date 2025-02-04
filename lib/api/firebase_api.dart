@@ -1,7 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_practice/controllers/login_controller.dart';
 import 'package:firebase_practice/pages/dashboard_page.dart';
 import 'package:firebase_practice/pages/menus/home_page.dart';
+import 'package:firebase_practice/routes/myAppRoute.dart';
 import 'package:get/get.dart';
+
+final authController = Get.find<AuthController>();
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
   print('Background Message: ${message.notification?.body ?? ''}');
@@ -27,7 +31,13 @@ class FirebaseApi {
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print('Notification Opened: ${message.notification?.body ?? ''}');
       print('Payload: ${message.data}');
-      Get.to(() => DashboardPage());     
+      Get.to(() => MyAppsRoute.navbar);
+
+      final userProfile = authController.userProfile.value;
+      if (userProfile == null) 
+      {
+        Get.to(() => MyAppsRoute.login);
+      }
     });
   }
 }
